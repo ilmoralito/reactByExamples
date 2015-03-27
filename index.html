@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="items"></div>
+	<script src="http://fb.me/react-0.13.1.js"></script>
+	<script src="http://fb.me/JSXTransformer-0.13.1.js"></script>
+	<script type="text/jsx">
+		var node = document.getElementById("items");
+
+		var Main = React.createClass({
+			getInitialState: function() {
+				return {
+					langs:["groovy", "php", "C#", "Javascript", "python", "Java"],
+					filteredLangs:[]
+				}
+			},
+
+			filter: function(e) {
+				var langs = this.state.langs;
+
+				langs = langs.filter(function(lang) {
+					return lang.toLowerCase().search(e.target.value.toLowerCase()) !== -1
+				})
+
+				this.setState({
+					filteredLangs:langs
+				})
+			},
+
+			componentWillMount: function() {
+				this.setState({filteredLangs:this.state.langs})
+			},
+
+			render: function() {
+				return (
+					<div>
+						<input onChange={this.filter} />
+						<List langs={this.state.filteredLangs} />
+					</div>
+				)
+			}
+		});
+
+		var List = React.createClass({
+			render: function() {
+				var langsNodes = this.props.langs.map(function(item) {
+					return <li>{item}</li>
+				})
+
+				return (
+					<ul>
+						{langsNodes}
+					</ul>
+				)
+			}
+		})
+
+		React.render(<Main />, node);
+	</script>
+</body>
+</html>
